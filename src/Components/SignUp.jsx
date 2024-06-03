@@ -14,7 +14,7 @@ const SignUp = () => {
         e.preventDefault();
         try{
             const {username,email,password} = credentials;
-            const response = await fetch("https://notes-application-api-pi.vercel.app/api/auth/user", {
+            const response = await fetch("http://localhost:5000/api/auth/user", {
                 method: 'POST',
                 headers: {
                   "Access-Control-Allow-Headers" : "Content-Type",
