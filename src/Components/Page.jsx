@@ -19,9 +19,10 @@ const Page = () => {
           setIsEnd(true);
           return;
         }
-
+        //  console.log(data);
         // success
-        setPosts([...posts, ...data]);
+        setPosts((prev) => [...prev, ...data]);
+        // console.log(posts);
       })
       .catch((error) => {
         console.log(error.message);
@@ -30,15 +31,15 @@ const Page = () => {
 
   const handleScroll = (e) => {
     const { offsetHeight, scrollTop, scrollHeight } = e.target;
-
+     console.log(offsetHeight, scrollTop, scrollHeight);
     if (offsetHeight + scrollTop >= scrollHeight) {
       setSkip(posts?.length);
       console.log(skip);
     }
   };
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handelInfiniteScroll);
+     return () => window.removeEventListener("scroll", handelInfiniteScroll);
   }, []);
 
   const handelInfiniteScroll = async () => {
@@ -47,27 +48,28 @@ const Page = () => {
     // console.log("scrollTop" + document.documentElement.scrollTop);
     try {
       if (
-        window.innerHeight + document.documentElement.scrollTop + 1 >=
+        window.innerHeight + document.documentElement.scrollTop + 1  >=
         document.documentElement.scrollHeight
       ) {
-        console.log(posts);
-        setSkip(posts?.length);
+        setSkip((skip)=> skip + 10);
         console.log(skip);
+        // setSkip(posts?.length);
+       
       }
     } catch (error) {
       console.log(error);
     }
   };
-
+//  scrollbars:"hidden" 
   return (
     <div >
-      <div className="min-h-screen mt-8" onScroll={handleScroll}>
+      <div className="h-screen "  >
         <div className="text-center mb-14">
           <h1 className="text-4xl">MERN Miscellaneous</h1>
           <h1 className="text-3xl text-accent italic">Infinite scroll</h1>
         </div>
 
-        <div className="h-screen overflow-scroll" onScroll={handleScroll} >
+        <div  >
           {/* Map all posts here */}
           {posts?.map((post) => (
              <div key={post._id} className="card shadow-sm bg-neutral text-accent-content mx-8 md:mx-36 lg:mx-80 mb-28">
